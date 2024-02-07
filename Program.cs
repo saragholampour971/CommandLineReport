@@ -1,3 +1,22 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using CommandLineReport;
 
-Console.WriteLine("Hello, World!");
+class Program
+{
+
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine($"^^^^^^^^^{Directory.Exists(@"D:\me\Extentions")}");
+
+
+
+
+        // Menu loop
+        Menu menu = new Menu();
+        menu.RunMenu();
+    }
+}

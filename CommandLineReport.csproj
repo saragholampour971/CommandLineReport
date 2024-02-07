@@ -7,4 +7,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Report, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\Report\bin\Debug\net8.0\Report.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
