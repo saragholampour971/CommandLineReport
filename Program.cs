@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using CommandLineReport;
+using Report;
 
 class Program
 {
@@ -10,7 +11,7 @@ class Program
 
     static void Main(string[] args)
     {
-        Console.WriteLine($"^^^^^^^^^{Directory.Exists(@"D:\me\Extentions")}");
+
 
 
 
