@@ -7,14 +7,14 @@ public class Menu
 
     public void RunMenu()
     {
-        List<MenuItem> firstMenu = new List<MenuItem>{
-            new MenuItem{Label = "Read Extentions",Action = Actions.ReadDll},
-            new MenuItem{Label = "Manage Extentions",Action = null}
-    };
-
-
-
-            Tools.printMenu(firstMenu);
+    //     List<MenuItem> firstMenu = new List<MenuItem>{
+    //         new MenuItem{Label = "Read Extentions",Action = Actions.ReadDll},
+    //         new MenuItem{Label = "Manage Extentions",Action = null}
+    // };
+    //
+    //
+    //
+    //         Tools.printMenu(firstMenu);
     // while (true)
         // {
             // Console.WriteLine("1. Run Report");

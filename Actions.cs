@@ -6,30 +6,28 @@ namespace CommandLineReport;
 
 public static class Actions
 {
-    static IEnumerable<Type> FindReportImplementingTypes(Assembly assembly)
-    {
-        var reportType = typeof(IReport);
-
-        return assembly.GetTypes().Where(type => reportType.IsAssignableFrom(type) && type.IsClass);
-    }
 
     public static void ReadDll()
     {
-        string? folderPath = null;
-        while (folderPath is null)
+        while (MyReportManager.FolderPath is null)
         {
+            Console.BackgroundColor = ConsoleColor.Blue;
             Console.WriteLine("Enter Folder Path Name");
-            folderPath = Console.ReadLine();
+            Console.ResetColor();
+
+            MyReportManager.FolderPath = Console.ReadLine();
         }
 
-        while (Directory.Exists(folderPath) is false)
+        while (Directory.Exists(MyReportManager.FolderPath) is false)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("you're wrong , enter correct path");
-            folderPath = Console.ReadLine();
+            Console.ResetColor();
+            MyReportManager.FolderPath = Console.ReadLine();
         }
 
-        string[] dllFiles = Directory.GetFiles(folderPath, "*.dll");
-        List<IReport> instances = new List<IReport>();
+        string[] dllFiles = Directory.GetFiles(MyReportManager.FolderPath, "*.dll");
+        List<Extention> instances = new List<Extention>();
         List<MenuItem> menuItems = new List<MenuItem>();
 
         foreach (var dllFile in dllFiles)
@@ -42,19 +40,19 @@ public static class Actions
 
             foreach (Type type in types)
             {
-                Console.WriteLine($" type is {type}");
                 Type matchedItem = null;
 
                 if (typeof(IReport).IsAssignableFrom(type))
                 {
-                    var instance = (dynamic)(Activator.CreateInstance(type) as IReport);
-                    instances.Add((dynamic)instance);
-                    menuItems.Add(new MenuItem { Label = instance?.Label });
+                    var instance = (dynamic)(IReport)(Activator.CreateInstance(type));
+                    instances.Add((dynamic)new Extention(){Status = Status.Enable,SubMenus=instance.SubMenus ,Label = instance.Label});
+                    
+                    menuItems.Add((dynamic)new MenuItem { Label = instance?.Label });
                 }
             }
 
         }
-        Tools.printMenu(menuItems,true);
 
+        MyReportManager.Extentions = instances;
     }
 }
