@@ -71,7 +71,7 @@ public static class MyReportManager
         {
             var firstMenu = new List<MenuItem>
             {
-                new()
+                new MenuItem
                 {
                     Label = "Read Extentions", Action = () =>
                     {
@@ -79,11 +79,12 @@ public static class MyReportManager
                         if (Extensions?.Count > 0) PrintExtensions(Extensions);
                     }
                 },
-                new() { Label = "Manage Extentions", Action = () =>
+                new MenuItem { Label = "Manage Extentions", Action = () =>
                 {
                     Console.WriteLine("asdfasdfasdfasdf");
                     ManageExtensions();
                 } }
+                ,new MenuItem{Label = "View report History",Action = null}
             };
 
             Tools.Print("* * * * * * * * * * * * * * *",null,ConsoleColor.Cyan);
