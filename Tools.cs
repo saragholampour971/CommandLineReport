@@ -18,20 +18,21 @@ public static class Tools
         try
         {
             var selectedRow = Console.ReadLine();
-            var maximum = menu.Count - 1;
-            while (selectedRow is null || selectedRow.Length == 0) selectedRow = Console.ReadLine();
+            var maximum = menu.Count ;
+            int index ;
+        
+            while (!int.TryParse(selectedRow, out index))
 
-            int index;
-            int.TryParse(selectedRow, out index);
-            while ((index != 0 && index - 1 > maximum) || index - 1 < 0)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine($" {index} is wrong! enter another item");
                 Console.ResetColor();
-                index = int.Parse(Console.ReadLine());
-            }
+                selectedRow = Console.ReadLine();
+                 index = int.Parse(selectedRow);
 
-            if (menu[index - 1]?.Action is not null) menu[index - 1]?.Action();
+            }
+            index = int.Parse(selectedRow)-1;
+            if (menu[index]?.Action is not null) menu[index]?.Action();
         }
         catch (Exception e)
         {
@@ -41,7 +42,7 @@ public static class Tools
     }
 
 
-    public static void Print(string text, System.ConsoleColor? BackgroundColor, System.ConsoleColor? ForegroundColor)
+    public static void Print(string text, System.ConsoleColor? BackgroundColor=null, System.ConsoleColor? ForegroundColor=null)
     {
         if (BackgroundColor.HasValue)
         {

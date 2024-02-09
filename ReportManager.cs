@@ -17,7 +17,7 @@ public static class MyReportManager
 {
     public static string FolderPath { get; set; }
     public static List<History> Histories { get; set; }
-    public static List<Extention> Extentions { get; set; }
+    public static List<Extention> Extensions { get; set; } = new List<Extention>(){};
 
     public static void PrintSubMenus(Extention extention)
     {
@@ -33,14 +33,35 @@ public static class MyReportManager
     }
 
 
-    public static void PrintExtentions(List<Extention> extentions)
+    public static void PrintExtensions(List<Extention> extentions)
     {
         Tools.Print("Select category: ",null,ConsoleColor.Green);
-        Tools.printMenu(Extentions.Select(i => new MenuItem
+        Tools.printMenu(Extensions.Select(i => new MenuItem
         {
             Label = i.Label, Action = () =>
                 PrintSubMenus(i)
         }).ToList(), true);
+    }
+
+
+
+    public static void ManageExtensions()
+    {
+        if (MyReportManager.Extensions.Count==0)
+        {
+            Tools.Print("there is no extension . ",null,ConsoleColor.Red);
+        }
+        else
+        {
+            Tools.Print("Manage Extensions",null,ConsoleColor.Yellow);
+            Tools.Print("State              | Extension Name            ",ConsoleColor.DarkBlue);
+
+            foreach (Extention extension in MyReportManager.Extensions)
+            { 
+                Tools.Print($"{extension.Status}       | {extension.Label}");
+            }
+        }
+  
     }
 
 
@@ -55,10 +76,14 @@ public static class MyReportManager
                     Label = "Read Extentions", Action = () =>
                     {
                         Actions.ReadDll();
-                        if (Extentions?.Count > 0) PrintExtentions(Extentions);
+                        if (Extensions?.Count > 0) PrintExtensions(Extensions);
                     }
                 },
-                new() { Label = "Manage Extentions", Action = null }
+                new() { Label = "Manage Extentions", Action = () =>
+                {
+                    Console.WriteLine("asdfasdfasdfasdf");
+                    ManageExtensions();
+                } }
             };
 
             Tools.Print("* * * * * * * * * * * * * * *",null,ConsoleColor.Cyan);

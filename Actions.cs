@@ -47,6 +47,6 @@ public static class Actions
             }
         }
 
-        MyReportManager.Extentions = instances;
+        MyReportManager.Extensions = instances;
     }
 }
