@@ -11,8 +11,13 @@ public class MenuItem
 }
 public static class Tools
 {
-    public static void printMenu(List<MenuItem> menu)
+    public static void printMenu(List<MenuItem> menu,bool hasBack=false)
     {
+        if (hasBack is true)
+        {
+            menu.Add(new MenuItem { Label = "Back", Action = () => { return; } });
+
+        }
         int counter = 0;
         foreach (var menuItem in menu)
         {
@@ -20,7 +25,12 @@ public static class Tools
             Console.WriteLine($"{counter}. {menuItem.Label}");
         }
 
-        var index = Int32.Parse(Console.ReadLine())-1;
+        var selectedRow = Console.ReadLine();
+        while (selectedRow is null||selectedRow.Length==0)
+        {
+            selectedRow = Console.ReadLine();
+        }
+        var index = int.Parse(selectedRow)-1;
         while (index > menu.Count-1 || index < 0)
         {
             Console.WriteLine($" {index} is wrong! enter another item");
@@ -29,10 +39,8 @@ public static class Tools
 
         if (menu[index]?.Action is not null)
         {
-            Console.WriteLine("action is not null");
             menu[index]?.Action();
         }
-        else Console.WriteLine("action is null");
      
         // return ans;
     }

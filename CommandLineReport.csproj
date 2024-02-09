@@ -8,6 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Reference Include="ProductManager">
+        <HintPath>..\extentions\ProductManager.dll</HintPath>
+      </Reference>
       <Reference Include="Report">
         <HintPath>..\Report\bin\Debug\net8.0\Report.dll</HintPath>
       </Reference>

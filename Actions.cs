@@ -1,22 +1,16 @@
 using System.Reflection;
-using CommandLineReport;
-using Report;
+using System.Reflection.Emit;
+using ReportManager;
 
-namespace DefaultNamespace;
+namespace CommandLineReport;
 
 public static class Actions
 {
-    static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+    static IEnumerable<Type> FindReportImplementingTypes(Assembly assembly)
     {
-        while (toCheck != null && toCheck != typeof(object))
-        {
-            var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-            if (generic == cur)
-                return true;
-            toCheck = toCheck.BaseType;
-        }
+        var reportType = typeof(IReport);
 
-        return false;
+        return assembly.GetTypes().Where(type => reportType.IsAssignableFrom(type) && type.IsClass);
     }
 
     public static void ReadDll()
@@ -35,34 +29,32 @@ public static class Actions
         }
 
         string[] dllFiles = Directory.GetFiles(folderPath, "*.dll");
-        Console.WriteLine($" count of dll is {dllFiles.Length}");
-        foreach (string dllFile in dllFiles)
+        List<IReport> instances = new List<IReport>();
+        List<MenuItem> menuItems = new List<MenuItem>();
+
+        foreach (var dllFile in dllFiles)
         {
             Assembly assembly = Assembly.LoadFrom(dllFile);
 
-            // =====================================
-            Type[] types = assembly.GetTypes();
-            List<Report<object>> instances = new List<Report<object>>();
-            // Iterate over each type in the assembly
+
+            Type[] types = (dynamic)assembly.GetTypes();
+
+
             foreach (Type type in types)
             {
+                Console.WriteLine($" type is {type}");
                 Type matchedItem = null;
 
-
-                if (IsSubclassOfRawGeneric(typeof(Report<>), type))
+                if (typeof(IReport).IsAssignableFrom(type))
                 {
-                    Console.WriteLine($"generic class named {type.FullName}");
-                    matchedItem = type;
-                }
-
-
-                if (matchedItem is not null)
-                {
-                    var instance = Activator.CreateInstance(matchedItem) as Report<object>;
-                    instances.Add(instance);
-                    Console.WriteLine($">>'{type.FullName}'{matchedItem.FullName} loaded successfully ");
+                    var instance = (dynamic)(Activator.CreateInstance(type) as IReport);
+                    instances.Add((dynamic)instance);
+                    menuItems.Add(new MenuItem { Label = instance?.Label });
                 }
             }
+
         }
+        Tools.printMenu(menuItems,true);
+
     }
 }
