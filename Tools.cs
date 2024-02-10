@@ -1,48 +1,61 @@
 namespace CommandLineReport;
 
-
-
 public static class Tools
 {
-    public static void printMenu(List<MenuItem> menu, bool hasBack = false)
+    public static void printMenu( List<MenuItem> menu, string? Title=null, bool hasBack = false)
     {
-        if (hasBack is true) menu.Add(new MenuItem { Label = "Back", Action = () => { } });
-
-        var counter = 0;
-        foreach (var menuItem in menu)
+        bool shouldExit = false;
+        while (!shouldExit)
         {
-            counter++;
-            Console.WriteLine($"{counter}. {menuItem.Label}");
-        }
+            if (Title is not null)
+                Tools.Print(Title, null, ConsoleColor.Green);
 
-        try
-        {
-            var selectedRow = Console.ReadLine();
-            var maximum = menu.Count ;
-            int index ;
-        
-            while (!int.TryParse(selectedRow, out index))
+            List<MenuItem> copyMenu = new List<MenuItem>(menu);
+            if (hasBack is true) copyMenu.Add(new MenuItem {Label = "Back"});
 
+            var counter = 0;
+            foreach (var menuItem in copyMenu)
             {
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine($" {index} is wrong! enter another item");
-                Console.ResetColor();
-                selectedRow = Console.ReadLine();
-                 index = int.Parse(selectedRow);
+                counter++;
+                Console.WriteLine($"{counter}. {menuItem.Label}");
+            }
+
+            try
+            {
+                Tools.Print("\n \n Please Enter an Option :",null,ConsoleColor.DarkYellow);
+                var selectedRow = Console.ReadLine();
+                var maximum = copyMenu.Count;
+
+                int index;
+
+                while (!int.TryParse(selectedRow, out index))
+
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine($" {index} is wrong! enter another item");
+                    Console.ResetColor();
+                    selectedRow = Console.ReadLine();
+                    index = int.Parse(selectedRow);
+                }
+
+                index = int.Parse(selectedRow) - 1;
+                if (copyMenu[index]?.Action is not null) copyMenu[index]?.Action();
+                else shouldExit = true;
+
+                if (!hasBack)
+                    shouldExit = true;
 
             }
-            index = int.Parse(selectedRow)-1;
-            if (menu[index]?.Action is not null) menu[index]?.Action();
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine($"oops {e.Message}");
+            }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine($"oops {e.Message}");
-        }
-
     }
 
 
-    public static void Print(string text, System.ConsoleColor? BackgroundColor=null, System.ConsoleColor? ForegroundColor=null)
+    public static void Print(string text, System.ConsoleColor? BackgroundColor = null,
+        System.ConsoleColor? ForegroundColor = null)
     {
         if (BackgroundColor.HasValue)
         {
@@ -52,6 +65,7 @@ public static class Tools
         {
             Console.ForegroundColor = ForegroundColor.Value;
         }
+
         Console.WriteLine(text);
         Console.ResetColor();
     }

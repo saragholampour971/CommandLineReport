@@ -1,9 +1,13 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005Cme_005CAssembly1_005Cbin_005CDebug_005Cnet8_002E0_005CAssembly1_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005Cme_005CProductManager_005CRefrences_005CReport_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005Cme_005CReport_005Cbin_005CDebug_005Cnet8_002E0_005CReport_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=D_003A_005Cme_005CSara_005Cbin_005CDebug_005Cnet8_002E0_005CSara_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=F_003A_005Chamkaran_005Cproject_005Cextentions_005CProductManager_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=F_003A_005Chamkaran_005Cproject_005CProductManager_005CRefrences_005CReport_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=F_003A_005Chamkaran_005Cproject_005CReport_005Cbin_005CDebug_005Cnet8_002E0_005CReport_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=F_003A_005Chamkaran_005Cproject_005CReport_005Cobj_005CDebug_005Cnet8_002E0_005CReport_002Edll/@EntryIndexedValue">True</s:Boolean>
-	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="D:\me\CommandLineReport\refrences\Report.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
