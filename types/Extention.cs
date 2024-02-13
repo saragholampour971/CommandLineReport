@@ -1,3 +1,4 @@
+using CommandLineReport.enums;
 using ReportManager;
 
 namespace CommandLineReport;

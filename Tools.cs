@@ -1,8 +1,67 @@
+using System.Reflection;
+using CommandLineReport.enums;
+using ReportManager;
+
 namespace CommandLineReport;
 
 public static class Tools
 {
-    public static void printMenu( List<MenuItem> menu, string? Title=null, bool hasBack = false)
+
+    // read dll from folder and put theme to param list
+    public static void ReadDll(out List<Extention> extentions)
+    {
+        while (MyReportManager.FolderPath is null)
+        {
+            Tools.Print("Enter Folder Path Name",ConsoleColor.Blue,null);
+
+            MyReportManager.FolderPath = Console.ReadLine();
+        }
+
+        while (Directory.Exists(MyReportManager.FolderPath) is false)
+        {
+            Tools.Print("you're wrong , enter correct path",null,ConsoleColor.Red);
+            MyReportManager.FolderPath = Console.ReadLine();
+        }
+
+        var dllFiles = Directory.GetFiles(MyReportManager.FolderPath, "*.dll");
+        var instances = new List<Extention>();
+        var menuItems = new List<MenuItem>();
+
+        foreach (var dllFile in dllFiles)
+        {
+            var assembly = Assembly.LoadFrom(dllFile);
+
+
+            var types = assembly.GetTypes();
+
+
+            foreach (var type in types)
+            {
+                Type matchedItem = null;
+
+                if (typeof(IReport).IsAssignableFrom(type))
+                {
+                    var instance = (dynamic)(IReport)Activator.CreateInstance(type);
+                    instances.Add((dynamic)new Extention
+                        { Status = Status.Enable, SubMenus = instance.SubMenus, Label = instance.Label });
+
+                    menuItems.Add((dynamic)new MenuItem { Label = instance?.Label });
+                }
+            }
+        }
+
+        extentions = instances;
+    }
+
+
+
+
+    // just need to pass list of label of each menu item & action , each menu item selected , action of it will be fire.
+    // this func has some feature .
+    // Title is title of menu .
+    // has back is added back item to menu
+    // also this func check input ,to user only print number & check to be less than menu count
+    public static void PrintMenu( List<MenuItem> menu, string? Title=null, bool hasBack = false)
     {
         bool shouldExit = false;
         while (!shouldExit)
@@ -22,7 +81,7 @@ public static class Tools
 
             try
             {
-                Tools.Print("\n \n Please Enter an Option :",null,ConsoleColor.DarkYellow);
+                Tools.Print("\n \n Please Enter an Option :", null, ConsoleColor.DarkYellow);
                 var selectedRow = Console.ReadLine();
                 var maximum = copyMenu.Count;
 
@@ -32,10 +91,10 @@ public static class Tools
 
                 {
                     Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine($" {index} is wrong! enter another item");
+                    Console.WriteLine($" wrong! enter another item");
                     Console.ResetColor();
                     selectedRow = Console.ReadLine();
-                    index = int.Parse(selectedRow);
+
                 }
 
                 index = int.Parse(selectedRow) - 1;
@@ -50,12 +109,15 @@ public static class Tools
             {
                 Console.WriteLine($"oops {e.Message}");
             }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine($"oops {e.Message}");
+            }
         }
     }
 
-
-    public static void Print(string text, System.ConsoleColor? BackgroundColor = null,
-        System.ConsoleColor? ForegroundColor = null)
+// for print string with custom color
+    public static void Print(string text, System.ConsoleColor? BackgroundColor = null, System.ConsoleColor? ForegroundColor = null)
     {
         if (BackgroundColor.HasValue)
         {

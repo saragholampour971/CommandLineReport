@@ -1,10 +1,8 @@
+using CommandLineReport.enums;
+
 namespace CommandLineReport;
 
-public enum Status
-{
-    Enable,
-    Disable
-}
+
 
 public class History
 {
@@ -14,10 +12,10 @@ public class History
 
 public static class MyReportManager
 {
-    public static string FolderPath { get; set; }
-    public static List<History> Histories { get; set; } = new List<History>();
+    public static string? FolderPath;
+    public static List<History> Histories = new List<History>();
 
-    public static List<Extention> Extensions { get; set; } = new List<Extention>() { };
+    public static List<Extention> Extensions = new List<Extention>() ;
 
 // ----------------------------------------------------------------------------
 
@@ -32,8 +30,13 @@ public static class MyReportManager
                 {
                     Label = "Read Extentions", Action = () =>
                     {
-                        Actions.ReadDll();
-                        if (Extensions?.Count > 0) PrintExtensions(Extensions);
+
+
+                        if (FolderPath is null)
+                            Tools.ReadDll(out Extensions);
+
+                        else if (Extensions?.Count > 0)
+                            PrintExtensions();
                     }
                 },
                 new MenuItem
@@ -47,13 +50,13 @@ public static class MyReportManager
             Tools.Print("*    Welcome to your app    *", null, ConsoleColor.Cyan);
             Tools.Print("* * * * * * * * * * * * * * *", null, ConsoleColor.Cyan);
 
-            Tools.printMenu(firstMenu, "What do you want ?");
+            Tools.PrintMenu(firstMenu, "What do you want ?");
         }
     }
 
     public static void SaveHistory(string TaskName)
     {
-        Histories.Add(new History{TaskLabel = TaskName,FulfilledDate = DateTime.Now});
+        Histories.Add(new History {TaskLabel = TaskName, FulfilledDate = DateTime.Now});
     }
 
     public static void PrintSubMenus(Extention extention)
@@ -71,22 +74,22 @@ public static class MyReportManager
         if (items is not null)
         {
             Console.Clear();
-            Tools.printMenu(items, "select report : ", true);
+            Tools.PrintMenu(items, "select report : ", true);
         }
     }
 
 
-    public static void PrintExtensions(List<Extention> extentions)
+    public static void PrintExtensions()
     {
         List<MenuItem> list = new List<MenuItem>();
-        list = Extensions.Select(i => new MenuItem
+        list = Extensions.Where(ex => ex.Status == Status.Enable).Select(i => new MenuItem
         {
             Label = i.Label, Action = () =>
                 PrintSubMenus(i)
         }).ToList();
 
         Console.Clear();
-        Tools.printMenu(list, "select Category", true);
+        Tools.PrintMenu(list, "select Category", true);
     }
 
     public static void ManageExtensions()
@@ -119,25 +122,24 @@ public static class MyReportManager
                 list.Add(new MenuItem {Label = "Back", Action = () => { shouldExit = true; }});
 
                 Console.Clear();
-                Tools.printMenu( list, " Manage Extentions \n    State       | Extension Name    ");
+                Tools.PrintMenu(list, " Manage Extentions \n    State       | Extension Name    ");
+
             }
         }
     }
 
 
-
-
-
     public static void PrintHistories()
     {
-        if ( Histories.Count==0)
+        if (Histories.Count == 0)
         {
-            Tools.Print("there is no history ", null,ConsoleColor.Red);
+            Tools.Print("there is no history ", null, ConsoleColor.Red);
         }
         else
         {
             foreach (var history in Histories)
             {
+
                 Tools.Print($"Run {history.TaskLabel}  on {history.FulfilledDate}");
             }
         }
